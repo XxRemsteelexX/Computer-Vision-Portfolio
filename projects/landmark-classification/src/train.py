@@ -14,12 +14,9 @@ def train_one_epoch(train_dataloader, model, optimizer, loss):
     """
 
     if torch.cuda.is_available():
-        # YOUR CODE HERE: transfer the model to the GPU
-        # HINT: use .cuda()
         model = model.cuda()
     
 
-    # YOUR CODE HERE: set the model to training mode
     model.train()
     
     train_loss = 0.0
@@ -36,7 +33,6 @@ def train_one_epoch(train_dataloader, model, optimizer, loss):
             data, target = data.cuda(), target.cuda()
 
         # 1. clear the gradients of all optimized variables
-        # YOUR CODE HERE:
         optimizer.zero_grad()
         # 2. forward pass: compute predicted outputs by passing inputs to the model
         output  = model(data)
@@ -103,11 +99,7 @@ def optimize(data_loaders, model, optimizer, loss, n_epochs, save_path, interact
     valid_loss_min = None
     logs = {}
 
-    # Learning rate scheduler: setup a learning rate scheduler that
-    # reduces the learning rate when the validation loss reaches a
-    # plateau
-    # HINT: look here: 
-    # https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate
+    # Learning rate scheduler
     scheduler  =  torch.optim.lr_scheduler.ReduceLROnPlateau(
         optimizer, mode='min', factor=0.1, patience=5, verbose=True
     )
@@ -186,7 +178,6 @@ def one_epoch_test(test_dataloader, model, loss):
             test_loss = test_loss + ((1 / (batch_idx + 1)) * (loss_value.data.item() - test_loss))
 
             # convert logits to predicted class
-            # HINT: the predicted class is the index of the max of the logits
             pred  = logits.max(dim=1, keepdim=True)[1]
 
             # compare predictions to true label
